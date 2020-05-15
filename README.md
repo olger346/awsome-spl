@@ -37,3 +37,16 @@ index="*" severity_id="severity_id=\"*\"" | eval islocal=case(cidrmatch("10.0.0.
 
 ## Timechart Single Value (EPO McAfee critical events)
 * index="*" severity_id="severity_id=\"1\""| timechart count
+
+## Access JSON Objects from Logs
+Is just simple as a class in some programing language, in order to access objects, just specify the (.) in the object  
+`{ [-]
+   event: { [-]
+     CommandLine: "C:\Program Files (x86)\Internet Explorer\IEXPLORE.EXE"
+     ComputerName: Hacker-PC
+     DetectDescription: A process using Force Data Execution Prevention (Force DEP) tried to execute non-executable memory. The process was blocked.
+     DetectId: SomeRandomCode
+     DetectName: Blocked Exploit
+     DocumentsAccessed: [ [+]]
+}`  
+In order to access the Object in this case it would be `event.CompurerName` To get the Name of the computer
