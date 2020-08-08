@@ -6,7 +6,8 @@ Linux Auth.log regex to capture ssh ip attempts.
 rex "\s(?<Ip>(?:[0-9]{1,3}\.){3}[0-9]{1,3})\s"
 
 ## Username
-Linux auth.log User ssh  
+For this entry we have modify /etc/sshd_config and enable SyslogFacility AUTHPRIV (almost all linux) 
+Linux auth.log User ssh 
 rex "\s\bfor\b\s(?<user>\w{1,20})"
 
 ## Time
@@ -32,11 +33,11 @@ Desde <https://docs.splunk.com/Documentation/Splunk/8.0.3/SearchReference/Sendem
 ## Contar los usuarios NA en "windows Server 2008"
 * index="*" severity_id="severity_id=\"*\"" | where searchmatch("Windows Server 2008") | stats count(eval(user="N/A")) as null
 
-## Evaluar si las Ips son internas o externas (cidrmatch for local IPs)
-index="*" severity_id="severity_id=\"*\"" | eval islocal=case(cidrmatch("10.0.0.0/8",dest_ip),"Local",cidrmatch("172.16.0.0/16",dest_ip),"Local", true(),"Externa") | table dest_ip islocal
+## Evaluar si las Ips son internas o externas (cidrmatch for local IPs) | Evaluate if a IP address is internal or external
+index="*" severity_id="1" | eval islocal=case(cidrmatch("10.0.0.0/8",dest_ip),"Local",cidrmatch("172.16.0.0/16",dest_ip),"Local", true(),"Externa") | table dest_ip islocal
 
 ## Timechart Single Value (EPO McAfee critical events)
-* index="*" severity_id="severity_id=\"1\""| timechart count
+* index="*" severity_id="1"| timechart count
 
 ## Access JSON Objects from Logs
 Is just simple as a class in some programing language, in order to access objects, just specify the (.) in the object  
@@ -50,3 +51,5 @@ Is just simple as a class in some programing language, in order to access object
      DocumentsAccessed: [ [+]]
 }`  
 In order to access the Object in this case it would be `event.CompurerName` To get the Name of the computer
+
+
