@@ -39,6 +39,25 @@ index="*" severity_id="1" | eval islocal=case(cidrmatch("10.0.0.0/8",dest_ip),"L
 ## Timechart Single Value (EPO McAfee critical events)
 * index="*" severity_id="1"| timechart count
 
+## Eval function examples
+### Copy a value of a field
+let's suppose that you want to copy the value of a field, in this case the field to copy is the signature of a malware so we'll have  
+a query like this.
+*index=your_index | eval storage_var=signature   
+
+### Apply hash to a field using eval
+to hash a string, timestamp or eny value we have to use **eval** function in order to get the hash of that field value
+Splunk supports SHA1, MD5, SHA256 and SHA512 functions in version 8.0.0, dont forget to change **md5()** function to another one
+*index=your_index | eval md5_hash=md5(field_to_hash)
+
+### convert timestampt to Human readable format using eval
+usually indexed time is represented by the field **_time**, working with JSON data is very common to have timestamp, the next function will return the date in ISO 8601
+*index=your_index | eval time=strftime(_time, "%Y-%m-%dT%H:%M:%S.%Q")  
+
+### Using eval to find not null values in a field
+To find not null values we can use a function called **isnotnull()**
+*index=your_index | eval not_null_values=isnotnull(field)
+
 ## Access JSON Objects from Logs
 Is just simple as a class in some programing language, in order to access objects, just specify the (.) in the object  
 `{ [-]
