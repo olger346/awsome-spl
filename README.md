@@ -74,4 +74,12 @@ In order to access the Object in this case it would be `event.CompurerName` To g
 ### AD Created User Accounts  
    `index=*win* EventCode=4720 
 | table dest_nt_domain SAM_Account_Name User_Principal_Name Account_Expires src_user src_user_phone 
-| rename dest_nt_domain AS "Dominio" SAM_Account_Name AS "Username" User_Princial_Name AS "Correo" Account_Expires AS "Fecha de Expiración" src_user AS "Creado por" src_user_phone AS "No. de Telefono"`
+| rename dest_nt_domain AS "Domain" SAM_Account_Name AS "Username" User_Princial_Name AS "email" Account_Expires AS "Expiration Date" src_user AS "Created by" src_user_phone AS "Phone Number"`
+
+### AD - Creation of Security Groups
+`index=*win* EventCode=4727 
+| table dest_nt_domain src_user Group_Name EventCodeDescription
+| rename dest_nt_domain AS "Domain" src_user AS "Created by" Group_Name AS "Group Name" EventCodeDescription AS "Description"`
+
+### AD - Creation of Workstations
+``
